@@ -1,2 +1,68 @@
 ---
 # tasks file for dhcp
+- name: refresh subscription manager
+  command: subscription-manager refresh
+
+- name: Install dhcp-server
+  ansible.builtin.yum:
+    name: dhcp
+    state: latest
+
+# - name: set wired connection conf
+#   blockinfile:
+#     dest: /etc/sysconfig/network-scripts/ifcfg-ens224
+#     block: |
+#       TYPE=Ethernet
+#       PROXY_METHOD=none
+#       BROWSER_ONLY=no
+#       BOOTPROTO=none
+#       DEFROUTE=yes
+#       IPV4_FAILURE_FATAL=no
+#       IPV6INIT=yes
+#       IPV6_AUTOCONF=yes
+#       IPV6_DEFROUTE=yes
+#       IPV6_FAILURE_FATAL=no
+#       NAME=ens224
+#       UUID=32d7c5eb-362e-4764-8ddd-847ab5c94e8e
+#       DEVICE=ens224
+#       ONBOOT=yes
+#       PREFIX=8
+#       IPADDR=10.0.0.5
+#       GATEWAY=10.0.0.1
+#       DNS1=8.8.8.8
+#       DOMAIN="max.local"
+
+#     insertafter: EOF
+
+- name: set gateway in network
+  blockinfile:
+    dest: /etc/dhcp/dhcpd.conf
+    block: |
+      default-lease-time 600; 
+      max-lease-time 7200; 
+      ddns-update-style none;
+      authoritative;
+      subnet 10.0.0.0 netmask 255.255.255.0 {
+        range 10.0.0.10 10.0.0.50;				
+        option routers 10.0.0.1;						
+        option subnet-mask 255.255.255.0;
+        option domain-name "max.local";
+        option domain-search "max.local";
+        option domain-name-servers 10.0.0.5, 8.8.8.8, 8.8.4.4;
+      }
+
+    insertafter: EOF
+    create: yes
+
+- name: firewall command
+  command: firewall-cmd --add-service=dhcp --permanent
+
+- name: network manager
+  service:
+    name: NetworkManager
+    state: restarted
+
+- name: dhcp service
+  service:
+    name: dhcpd
+    state: started

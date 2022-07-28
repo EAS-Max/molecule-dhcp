@@ -32,7 +32,7 @@ platforms:
         type: dhcp
 
       - name: max
-        ip: 10.0.0.1
+        ip: 10.0.0.3
         netmask: 255.255.255.0
     group: dhcp
 provisioner:
