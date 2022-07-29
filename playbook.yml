@@ -1,4 +1,4 @@
-- hosts: sing-max-dhcp
+- hosts: max-dhcp
   tasks:
     - name: dhcp tasks
       include_tasks: tasks/main.yml
