@@ -48,7 +48,7 @@
         option subnet-mask 255.255.255.0;
         option domain-name "max.local";
         option domain-search "max.local";
-        option domain-name-servers 8.8.8.8, 8.8.4.4;
+        option domain-name-servers 10.0.0.3, 8.8.8.8, 8.8.4.4;
       }
 
     insertafter: EOF
@@ -57,12 +57,17 @@
 - name: firewall command
   command: firewall-cmd --add-service=dhcp --permanent
 
+- name: reloading firewalld
+  service:
+    name: firewalld
+    state: restarted
+
 - name: network manager
   service:
     name: NetworkManager
     state: restarted
 
-- name: dhcp service
+- name: dhcpd service
   service:
     name: dhcpd
     state: started
