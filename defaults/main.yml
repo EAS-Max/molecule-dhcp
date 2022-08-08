@@ -1,2 +1,10 @@
 ---
 # defaults file for dhcp
+
+domain: max
+subnet: 10.0.0.0
+sub_range: 10.0.0.10 10.0.0.50
+dns: 10.0.0.5
+interface_in: ens224
+interface_out: ens192
+option_routers: 10.0.0.1

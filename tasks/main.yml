@@ -27,7 +27,7 @@
 #       DEVICE=ens224
 #       ONBOOT=yes
 #       PREFIX=8
-#       IPADDR=10.0.0.5
+#       IPADDR={{ dns | default('default_value')}}
 #       GATEWAY=10.0.0.1
 #       DNS1=8.8.8.8
 #       DOMAIN="max.local"
@@ -42,13 +42,13 @@
       max-lease-time 7200; 
       ddns-update-style none;
       authoritative;
-      subnet 10.0.0.0 netmask 255.255.255.0 {
-        range 10.0.0.10 10.0.0.50;				
+      subnet {{ subnet }} netmask 255.255.255.0 {
+        range {{ sub_range }};				
         option routers 10.0.0.1;						
         option subnet-mask 255.255.255.0;
-        option domain-name "max.local";
-        option domain-search "max.local";
-        option domain-name-servers 10.0.0.5, 8.8.8.8, 8.8.4.4;
+        option domain-name "{{ domain }}.local";
+        option domain-search "{{ domain }}.local";
+        option domain-name-servers {{ dns }}, 8.8.8.8, 8.8.4.4;
       }
 
     insertafter: EOF
@@ -56,6 +56,12 @@
 # I will add our dns once it is needed
 - name: firewall command
   command: firewall-cmd --add-service=dhcp --permanent
+
+# - name: Add dhcpd service permanent
+#   ansible.posix.firewalld:
+#     service: dhcp
+#     permanent: yes
+#     state: enabled
 
 - name: reloading firewalld
   service:
