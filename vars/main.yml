@@ -7,3 +7,5 @@ dns: 10.0.0.5
 interface_in: ens224
 interface_out: ens192
 option_routers: 10.0.0.1
+mac_address_gate: "{{ hostvars['max-gateway'].ansible_default_ipv4.macaddress }}"
+mac_address_dns: "{{ hostvars['max-dns'].ansible_default_ipv4.macaddress }}"

@@ -8,11 +8,10 @@
 #   version: variables
 #   name: dhcp
 
-# - src: https://github.com/EAS-Max/molecule-dns
-#   scm: git
-#   version: main
-#   name: dns
-
+- src: https://github.com/EAS-Max/molecule-dns
+  scm: git
+  version: main
+  name: dns
 # - src: https://github.com/EAS-Max/molecule_node
 #   scm: git
 #   version: main

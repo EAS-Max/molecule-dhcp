@@ -7,4 +7,5 @@ dns: 10.0.0.5
 interface_in: ens224
 interface_out: ens192
 option_routers: 10.0.0.1
-mac_add:
+# mac_address_gate: 00:50:56:87:bd:d6
+# mac_address_dns:

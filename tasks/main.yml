@@ -3,8 +3,8 @@
 #   debug: var=ansible_facts
 # tasks file for dhcp
 
-# - name: debug hostvars
-#   debug: var=hostvars['max-gateway']
+- name: debug hostvars
+  debug: var=hostvars['max-gateway']
 
 - name: refresh subscription manager
   command: subscription-manager refresh
@@ -50,16 +50,21 @@
       authoritative;
       subnet {{ subnet }} netmask 255.255.255.0 {
         range {{ sub_range }};				
-        option routers 10.0.0.1;						
+        option routers {{ option_routers }};						
         option subnet-mask 255.255.255.0;
         option domain-name "{{ domain }}.local";
         option domain-search "{{ domain }}.local";
         option domain-name-servers {{ dns }}, 8.8.8.8, 8.8.4.4;
       }
 
-      # host gateway-node {
-      #   hardware ethernet 
-      # }
+      host gateway-node {
+        hardware ethernet {{ mac_address_gate }};
+        fixed-address {{ option_routers }};
+      }
+      host DNS-node {
+        hardware ethernet {{ mac_address_dns }};
+        fixed-address {{ dns }};
+      }
     insertafter: EOF
     create: yes
 # I will add our dns once it is needed

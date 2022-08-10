@@ -1,14 +1,22 @@
-- hosts: all
-  pre_tasks:
-    - name: debug hostvars
-  debug: var=ansible_facts[max-gateway]
+# - hosts: max-dhcp
+#   tasks:
+#     - name: debug hostvars
+#       debug: var=hostvars['max-gateway'].ansible_default_ipv4.macaddress
+#       register: mac_address
+# pre_tasks:
+#   - name: set facts gateway
+#     when: "{{ 'max-gateway' in ansible_facts.hostname }}"
+#     ansible.builtin.set_fact:
+#       mac_address: "{{ ansible_facts]['macaddress']|default(None) }}"
+
+# - name: debug hostvars
+#   debug: var=mac_address
 
 - hosts: max-gateway
   tasks:
     - name: gateway tasks
       include_role:
         name: gateway
-
 # - hosts: max-gateway
 #   tasks:
 #     - name: Pause for 1 minutes to give it some time
@@ -22,6 +30,8 @@
 #         minutes: 1
 
 - hosts: max-dhcp
+  vars_files:
+    - vars/main.yml
   tasks:
     - name: dhcp
       include_tasks: tasks/main.yml
@@ -37,12 +47,11 @@
 #       ansible.builtin.pause:
 #         minutes: 2
 
-# - hosts: max-dns
-#   tasks:
-#     - name: dns tasks
-#       include_role:
-#         name: dns
-
+- hosts: max-dns
+  tasks:
+    - name: dns tasks
+      include_role:
+        name: dns
 # - hosts: max-node
 #   tasks:
 #     - name: node tasks
