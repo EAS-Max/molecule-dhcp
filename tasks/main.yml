@@ -1,9 +1,11 @@
 ---
-- name: test
-  debug:
-    msg: "{{ interface_in }}"
-
+# - name: debug hostvars
+#   debug: var=ansible_facts
 # tasks file for dhcp
+
+# - name: debug hostvars
+#   debug: var=hostvars['max-gateway']
+
 - name: refresh subscription manager
   command: subscription-manager refresh
 
@@ -55,6 +57,9 @@
         option domain-name-servers {{ dns }}, 8.8.8.8, 8.8.4.4;
       }
 
+      # host gateway-node {
+      #   hardware ethernet 
+      # }
     insertafter: EOF
     create: yes
 # I will add our dns once it is needed

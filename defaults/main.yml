@@ -7,3 +7,4 @@ dns: 10.0.0.5
 interface_in: ens224
 interface_out: ens192
 option_routers: 10.0.0.1
+mac_add:

@@ -1,0 +1,50 @@
+- hosts: all
+  pre_tasks:
+    - name: debug hostvars
+  debug: var=ansible_facts[max-gateway]
+
+- hosts: max-gateway
+  tasks:
+    - name: gateway tasks
+      include_role:
+        name: gateway
+
+# - hosts: max-gateway
+#   tasks:
+#     - name: Pause for 1 minutes to give it some time
+#       ansible.builtin.pause:
+#         minutes: 1
+
+# - hosts: max-dhcp
+#   tasks:
+#     - name: Pause for 1 minutes to give it some time
+#       ansible.builtin.pause:
+#         minutes: 1
+
+- hosts: max-dhcp
+  tasks:
+    - name: dhcp
+      include_tasks: tasks/main.yml
+# - hosts: max-dhcp
+#   tasks:
+#     - name: dhcp tasks
+#       include_role:
+#         name: dhcp
+
+# - hosts: max-dns
+#   tasks:
+#     - name: Pause for 2 minutes to give it some time
+#       ansible.builtin.pause:
+#         minutes: 2
+
+# - hosts: max-dns
+#   tasks:
+#     - name: dns tasks
+#       include_role:
+#         name: dns
+
+# - hosts: max-node
+#   tasks:
+#     - name: node tasks
+#       include_role:
+#         name: node
