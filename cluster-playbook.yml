@@ -52,6 +52,12 @@
     - name: dns tasks
       include_role:
         name: dns
+# - hosts: max-gateway
+#   tasks:
+#     - name: network manager
+#       service:
+#         name: NetworkManager
+#         state: restarted
 # - hosts: max-node
 #   tasks:
 #     - name: node tasks

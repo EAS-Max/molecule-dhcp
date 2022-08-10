@@ -3,8 +3,8 @@
 #   debug: var=ansible_facts
 # tasks file for dhcp
 
-- name: debug hostvars
-  debug: var=hostvars['max-gateway']
+# - name: debug hostvars
+#   debug: var=hostvars['max-dns'].ansible_ens224.macaddress
 
 - name: refresh subscription manager
   command: subscription-manager refresh
@@ -60,10 +60,12 @@
       host gateway-node {
         hardware ethernet {{ mac_address_gate }};
         fixed-address {{ option_routers }};
+        max-lease-time 84600; 
       }
       host DNS-node {
         hardware ethernet {{ mac_address_dns }};
         fixed-address {{ dns }};
+        max-lease-time 84600; 
       }
     insertafter: EOF
     create: yes
