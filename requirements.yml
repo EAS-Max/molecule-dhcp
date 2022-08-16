@@ -10,9 +10,10 @@
 
 - src: https://github.com/EAS-Max/molecule-dns
   scm: git
-  version: main
+  version: variable
   name: dns
-# - src: https://github.com/EAS-Max/molecule_node
-#   scm: git
-#   version: main
-#   name: node
+
+- src: https://github.com/EAS-Max/molecule_node
+  scm: git
+  version: variable
+  name: node

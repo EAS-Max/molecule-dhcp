@@ -1,8 +1,52 @@
+- hosts: all
+  tasks:
+    - name: loop groups
+      user:
+        name: "{{ item }}"
+        state: present
+        groups: "wheel"
+      loop: "{{ groups['all'] }}"
+
+# - hosts: all
+#   tasks:
+#     - name: loop dns hosts
+#       user:
+#         name: "{{ item2 }}"
+#         state: present
+#         groups: "wheel"
+#       loop:
+#         - 0
+#         - 1
+#         - 2
+#         - 3
+- hosts: all
+  tasks:
+    - name: Output idx
+      debug:
+        var: my_idx
+#       loop: "{{ rn2 }}"
+#       loop_control:
+#         index_var: my_idx
+
+- hosts: all
+  tasks:
+    - name: set url
+      when: "{{ item in ansible_facts.hostname }}"
+      set_fact:
+        node_target: "{{ hostvars[ item ].molecule_yml.platforms[ my_idx ].group }}"
+      loop: "{{ groups['all'] }}"
+      loop_control:
+        index_var: my_idx
+
 # - hosts: max-dhcp
 #   tasks:
 #     - name: debug hostvars
-#       debug: var=hostvars['max-gateway'].ansible_default_ipv4.macaddress
-#       register: mac_address
+#       debug: var=groups
+
+- hosts: all
+  tasks:
+    - name: debug node_target
+      debug: var=node_target
 # pre_tasks:
 #   - name: set facts gateway
 #     when: "{{ 'max-gateway' in ansible_facts.hostname }}"
@@ -41,11 +85,11 @@
 #       include_role:
 #         name: dhcp
 
-# - hosts: max-dns
-#   tasks:
-#     - name: Pause for 2 minutes to give it some time
-#       ansible.builtin.pause:
-#         minutes: 2
+- hosts: max-dns
+  tasks:
+    - name: Pause for 2 minutes to give it some time
+      ansible.builtin.pause:
+        minutes: 2
 
 - hosts: max-dns
   tasks:
@@ -58,8 +102,26 @@
 #       service:
 #         name: NetworkManager
 #         state: restarted
-# - hosts: max-node
+
+# - hosts: all
 #   tasks:
-#     - name: node tasks
-#       include_role:
-#         name: node
+#     - name: loop hosts
+#       user:
+#         name: "{{ item }}"
+#         state: present
+#         groups: "wheel"
+#       loop:
+#         - "{{ hostvars['max-gateway'].ansible_all_ipv4_addresses[1] }}"
+#         - "{{ hostvars['max-dhcp'].ansible_all_ipv4_addresses[1] }}"
+#         - "{{ hostvars['max-dns'].ansible_all_ipv4_addresses[1] }}"
+
+- hosts: all
+  tasks:
+    - name: debug node_target
+      debug: var=node_target
+
+- hosts: all
+  tasks:
+    - name: node tasks
+      include_role:
+        name: node
